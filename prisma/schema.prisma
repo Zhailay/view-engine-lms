@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model answer {
+  id         Int      @id @default(autoincrement())
+  text       String
+  isCorrect  Boolean  @default(false)
+  questionId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  question   question @relation(fields: [questionId], references: [id], map: "Answer_questionId_fkey")
+
+  @@index([questionId], map: "Answer_questionId_idx")
+}
+
+model attachment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String   @db.Text
+  courseId  BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  course    course   @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Attachment_courseId_fkey")
+
+  @@index([courseId], map: "Attachment_courseId_idx")
+}
+
+model category {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique(map: "Category_name_key")
+  course course[]
+}
+
+model chapter {
+  id           BigInt         @id @default(autoincrement())
+  title        String
+  description  String?        @db.Text
+  videoUrl     String?        @db.Text
+  isPublished  Boolean        @default(false)
+  isFree       Boolean        @default(true)
+  position     Int
+  courseId     BigInt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  course       course         @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Chapter_courseId_fkey")
+  userprogress userprogress[]
+
+  @@index([courseId], map: "Chapter_courseId_idx")
+}
+
+model course {
+  id          BigInt       @id @default(autoincrement())
+  userId      Int
+  title       String       @db.Text
+  description String       @db.Text
+  imageUrl    String?      @db.Text
+  price       Float?
+  isPublished Boolean      @default(false)
+  categoryId  Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime
+  attachment  attachment[]
+  chapter     chapter[]
+  category    category?    @relation(fields: [categoryId], references: [id], map: "Course_categoryId_fkey")
+  purchase    purchase[]
+  test        test[]
+
+  @@index([categoryId], map: "Course_categoryId_fkey")
+}
+
+model purchase {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt
+  courseId  BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  course    course   @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Purchase_courseId_fkey")
+
+  @@unique([userId, courseId], map: "Purchase_userId_courseId_key")
+  @@index([courseId], map: "Purchase_courseId_idx")
+}
+
+model question {
+  id        Int      @id @default(autoincrement())
+  text      String
+  testId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  answer    answer[]
+  test      test     @relation(fields: [testId], references: [id], map: "Question_testId_fkey")
+
+  @@index([testId], map: "Question_testId_idx")
+}
+
+model test {
+  id             Int              @id @default(autoincrement())
+  title          String
+  courseId       BigInt
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  question       question[]
+  course         course           @relation(fields: [courseId], references: [id], map: "Test_courseId_fkey")
+  usertestresult usertestresult[]
+
+  @@index([courseId], map: "Test_courseId_idx")
+}
+
+model user {
+  id             Int              @id @default(autoincrement())
+  name           String?
+  email          String?          @unique(map: "User_email_key")
+  emailVerified  Boolean
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  usertestresult usertestresult[]
+}
+
+model userprogress {
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt
+  chapterId   BigInt
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  chapter     chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade, map: "UserProgress_chapterId_fkey")
+
+  @@unique([userId, chapterId], map: "UserProgress_userId_chapterId_key")
+  @@index([chapterId], map: "UserProgress_chapterId_idx")
+}
+
+model usertestresult {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  testId    Int
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  test      test     @relation(fields: [testId], references: [id], map: "UserTestResult_testId_fkey")
+  user      user     @relation(fields: [userId], references: [id], map: "UserTestResult_userId_fkey")
+
+  @@index([testId], map: "UserTestResult_testId_idx")
+  @@index([userId], map: "UserTestResult_userId_idx")
+}
