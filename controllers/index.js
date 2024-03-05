@@ -1,5 +1,9 @@
-const MainController = require("./main-controller");
+const AuthController = require("./auth-controller");
+const DashboardController = require("./dashboard-controller");
+const PhotoController = require("./photo-controller");
 
 module.exports = {
-  MainController,
+  AuthController,
+  DashboardController,
+  PhotoController,
 };

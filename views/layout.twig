@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100">
+
+
+{% include "/components/header.twig" %}
+{% include "/components/sidebar.twig" %}
+
+<div class="p-4 sm:ml-64">
+   <div class="p-4 border-2 border-gray-200 border rounded-lg dark:border-gray-700 mt-14">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<script src="/js/flowbite.js"></script>
+</body>
+</html>
