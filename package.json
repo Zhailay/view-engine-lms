@@ -4,6 +4,7 @@
   "description": "Uses TailwindCSS in Node.js with Express",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/style.css"
   },
@@ -12,11 +13,16 @@
   "dependencies": {
     "@prisma/client": "^5.10.2",
     "autoprefixer": "^10.0.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4.17.1",
+    "express-session": "^1.18.0",
+    "jdenticon": "^3.2.0",
+    "memorystore": "^1.6.7",
     "postcss": "^8.1.2",
     "postcss-cli": "^8.1.0",
     "pug": "^3.0.0",
+    "session-file-store": "^1.5.0",
     "tailwindcss": "^1.9.5",
     "twig": "^1.17.1"
   },
