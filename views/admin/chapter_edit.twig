@@ -1,0 +1,111 @@
+{% extends "admin/layout.twig" %}
+{% block js %}
+<script src="/public/js/chapters.js"></script>
+{% endblock %}
+{% block content %}
+    <h1 class="text-2xl items-center mb-10"><i class='bx bx-customize'></i> Измените свой курс</h1>
+    <input type="hidden" id="courseId" value="{{courseid}}"/>
+    <input type="hidden" id="chapterId" value="{{chapter.id}}"/>
+    <div id="errors"></div>
+    <div class="flex gap-2">
+        <div class="w-full">
+            <form id="formTitle" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Название категории</h4>
+                    <button type="submit" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                    <input type="text" id="chapterTitle" value="{{chapter.title}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"/>
+                </div>
+            </form>
+            <form id="formDescription" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Описание категории</h4>
+                    <button type="submit" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                    <textarea type="text" id="chapterDescription" class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">{{chapter.description}}</textarea>
+                </div>
+            </form>
+            <form id="formVideo" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Видео главы</h4>
+                    <button class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                    <input type="text" id="chapterVideo" value="{{chapter.videoUrl}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"/>
+                </div>
+                <iframe class="mt-5" width="560" height="315" src="{{chapter.videoUrl}}" frameborder="0" allowfullscreen></iframe>
+
+            </form>
+        </div>
+        <div class="w-full">
+            <form id="formIsPublished" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Статус публикации</h4>
+                </div>
+                <div>
+                   
+                    <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="isPublished" id="isPublished" value="" class="sr-only peer" {{chapter.isPublished ? "checked":""}}/>
+                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span id="isPublishedName" class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{chapter.isPublished}}</span>
+                    </label>
+                   
+                </div>
+            </form>
+            
+            <div class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Прикрепленные файлы</h4>
+                    <button data-modal-target="attachment-modal" data-modal-toggle="attachment-modal" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Добавить файл</button>
+                </div>
+                {% include "/admin/chapter_attachment_modal.twig" %}
+                <div id="attachments">
+                {% if chapter.attachment|length == 0 %}
+                <div class="flex justify-between border border-slate-300 rounded-md p-2 border-dashed bg-slate-100 mb-3">
+                        <div>Здесь пока что нету прикреплении </div>
+                        
+                    </div>
+                {% endif %}
+                {% for file in chapter.attachment %}
+                    <div class="flex justify-between border border-slate-300 rounded-md p-2 border-dashed bg-slate-100 mb-3">
+                        <div>{{file.name}}</div>
+                        <div>
+                        <a href="/{{file.url}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">download</a>
+                        <a id="{{file.id}}" class="deleteAttachment font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Прикрепленные тесты</h4>
+                    <button data-modal-target="attachment-modal" data-modal-toggle="attachment-modal" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Добавить тест</button>
+                </div>
+                {% include "/admin/chapter_test_modal.twig" %}
+                <div id="tests">
+                {% if chapter.attachment|length == 0 %}
+                <div class="flex justify-between border border-slate-300 rounded-md p-2 border-dashed bg-slate-100 mb-3">
+                        <div>Здесь пока что нету тестов </div>
+                        
+                    </div>
+                {% endif %}
+                {% for file in chapter.test %}
+                    <div class="flex justify-between border border-slate-300 rounded-md p-2 border-dashed bg-slate-100 mb-3">
+                        <div>{{file.name}}</div>
+                        <div>
+                            <a href="{{file.url}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">download</a>
+                            <a id="{{file.id}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+   
+{% endblock %}

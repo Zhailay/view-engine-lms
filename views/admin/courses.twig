@@ -1,0 +1,40 @@
+{% extends "admin/layout.twig" %}
+
+{% block content %}
+    <div class="flex justify-between items-center mb-10">
+        <h1 class="text-2xl">Список курсов</h1>
+        <a href="/admin-create" class="bg-violet-700 rounded-xl px-3 py-2 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite">Создать курс <i class='bx bx-add-to-queue' ></i></i></a>
+    </div>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Название курса
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Статус
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for info in course %}
+            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{info.title}}
+                </th>
+                <td class="px-6 py-4">
+                    <span class=" rounded-lg {{info.isPublished ? "bg-green-500" : "bg-red-500"}} p-1 text-white">{{info.isPublished ? "Опубликовано":"Невидимо"}}</span>
+                </td>
+                <td class="px-6 py-4">
+                    <a href="/admin-edit-course/{{info.id}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"><i class='bx bxs-edit' ></i> Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

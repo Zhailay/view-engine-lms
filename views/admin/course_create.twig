@@ -1,0 +1,25 @@
+{% extends "admin/layout.twig" %}
+
+{% block js %}
+<script src="/public/js/admin.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="text-2xl items-center"><i class='bx bx-customize'></i> Создайте свой курс</h1>
+
+    <div class="bg-white p-3 mt-10">
+        <form id="courseTitle">
+            <p class="text-slate-400">Дайте название вашего курса, позже вы можете поменять его название.</p>
+            <div class="mb-6">
+                <label for="course-title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Загаловок курса</label>
+                <input type="text" id="course-title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div>
+                <a class="button mt-4 bg-slate-300 rounded-xl px-3 py-2 dark:text-white text-black hover:bg-slate-400 active:bg-slate-500 disabled:bg-slate-400 cursor-pointer">Назад</a>
+                <button type="submit" class="button mt-4 bg-sky-700 rounded-xl px-3 py-2 dark:text-white text-white hover:bg-sky-800 active:bg-sky-900 disabled:bg-slate-400 cursor-pointer">Продолжить</button>
+            </div>
+            <div id="errors"></div>
+        </form>
+    </div>
+{% endblock %}
