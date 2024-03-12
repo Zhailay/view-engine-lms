@@ -1,0 +1,86 @@
+{% extends "admin/layout.twig" %}
+{% block js %}
+<script src="/public/js/admin.js"></script>
+<script src="/public/js/chapters.js"></script>
+{% endblock %}
+{% block content %}
+    <h1 class="text-2xl items-center mb-10"><i class='bx bx-customize'></i> Измените свой курс</h1>
+    <input type="hidden" id="courseId" value="{{course.id}}"/>
+    <div id="errors"></div>
+    <div class="flex gap-2">
+        <div class="w-full">
+            <form id="formTitle" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Название курса</h4>
+                    <button type="submit" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                    <input type="text" id="courseTitle" value="{{course.title}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"/>
+                </div>
+            </form>
+            <form id="formDescription" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Описание курса</h4>
+                    <button type="submit" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                    <textarea type="text" id="courseDescription" class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">{{course.description}}</textarea>
+                </div>
+            </form>
+            <form id="formCourseImageUrl" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Выберите изображение</h4>
+                    <input type="file" id="imageUrl" name="imageUrl" class="text-sm" />
+                </div>
+                <div class="max-w-sm mx-auto">
+                    <img width="500" id="imageUrlSrc" src="{{course.imageUrl != null ? course.imageUrl:"/public/images/Placeholder.png" }}" />
+                </div>
+            </form>
+            <form id="formCourseCategory" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Выберите категорию</h4>
+                    <button class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Сохранить</button>
+                </div>
+                <div>
+                   
+                    <select id="courseCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected disabled>Выберите категорию</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {{ course.categoryId == category.id ? 'selected' : '' }}>{{ category.name }}</option>
+                        {% endfor %}
+
+                    </select>
+                   
+                </div>
+            </form>
+        </div>
+        <div class="w-full">
+            <div class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Главы курсов</h4>
+                    <button data-modal-target="static-modal" data-modal-toggle="static-modal" class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Добавить главу</button>
+                </div>
+                {% include "/admin/chapter_create_modal.twig" %}
+                <div id="chapters">
+                {% for chapter in course.chapter %}
+                    <div class="flex justify-between border border-slate-300 rounded-md p-2 border-dashed bg-slate-100 mb-3">
+                        <div>{{chapter.title}}</div>
+                        <a href="/admin-edit-chapter/{{course.id}}/{{chapter.id}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">edit</a>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            <form id="formCoursePrice" class="bg-white p-3 rounded-md mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4>Цена курса</h4>
+                    <button class="bg-violet-700 rounded-xl px-2 py-1 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer ite text-sm">Выставить цену</button>
+                </div>
+                <div>
+                    <input type="number" id="coursePrice" value="{{course.price}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" disabled/>
+                    <p class="text-slate-400 italic">Такой возможности пока нету</p>
+                </div>
+            </form>
+        </div>
+    </div>
+   
+{% endblock %}

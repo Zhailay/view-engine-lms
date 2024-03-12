@@ -9,7 +9,7 @@ app.set("view engine", "twig");
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/public", express.static("public"));
 twig.cache(false);
 var session = require("express-session");
 var FileStore = require("session-file-store")(session);
@@ -30,6 +30,11 @@ app.use(
 );
 
 app.use("/", require("./routes"));
+
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/login");
+});
 
 const server = app.listen(3000, () => {
   console.log(`The application started on port ${server.address().port}`);

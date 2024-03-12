@@ -34,7 +34,7 @@ $("#login").submit(function (e) {
     password: password,
   })
     .done(function (data) {
-      console.log(data);
+      // console.log(data);
       window.location.href = "/dashboard";
     })
     .fail(function (xhr, status, error) {

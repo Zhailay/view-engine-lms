@@ -1,0 +1,30 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="flex justify-between items-center mb-10">
+        <h1 class="text-2xl">Список курсов</h1>
+        <a href="/admin-courses" class="bg-violet-700 rounded-xl px-3 py-2 dark:text-white text-white hover:bg-violet-800 active:bg-violet-900 disabled:bg-slate-400 cursor-pointer">Админ панель</a>
+    </div>
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div
+        class="relative dark:bg-gray-900 dark:border-slate-700 bg-white border border-slate-100 rounded-3xl p-8 cursor-pointer hover:-translate-y-2 hover:shadow-xl transition"
+        >
+        <img src="/images/python.png" alt="Sneaker" />
+        <p class="mt-2 dark:text-white">{{ title }}</p>
+        <div class="justify-between mt-5">
+            <div class="flex flex-col">
+            <span class="text-slate-500">Category</span>
+            <b class="dark:text-white">Title</b>
+            </div>
+            <div class="flex text-slate-500">
+                <i class="fa-solid fa-layer-group"></i>
+                15 Этапов
+            </div>
+            <div>
+                <button class="mt-4 bg-sky-700 w-full rounded-xl py-2 dark:text-white text-white hover:bg-sky-800 active:bg-sky-900 disabled:bg-slate-400 cursor-pointer">Подробнее</button>
+            </div>
+        </div>
+        </div>
+        
+    </div>
+{% endblock %}
